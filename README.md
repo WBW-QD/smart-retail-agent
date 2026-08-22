@@ -58,6 +58,12 @@ chmod +x start.sh
 - 安装前端 npm 依赖
 - 后台启动后端（端口 8000）和前端（端口 5173）
 
+停止本地服务：
+
+```bash
+./stop.sh          # 或 Windows 双击 stop.bat
+```
+
 ### 3. 手动启动（分步）
 
 **后端：**
@@ -121,7 +127,10 @@ smart-retail-agent/
 │   ├── ollama_client.py       # Ollama 调用封装
 │   ├── mock_data.py           # 初始化模拟数据
 │   └── requirements.txt
-├── start.sh                   # 一键启动脚本
+├── start.sh                   # 一键启动脚本（跨平台）
+├── start.bat                  # Windows 双击启动
+├── stop.sh                    # 一键停止脚本（跨平台）
+├── stop.bat                   # Windows 双击停止
 ├── PROMPT.md                  # 原始 vibe coding 提示词
 └── README.md
 ```

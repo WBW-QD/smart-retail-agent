@@ -37,6 +37,16 @@
         </el-button>
       </el-header>
       <el-main class="main-content">
+        <!-- GitHub Pages 静态演示提示条（仅线上部署时显示） -->
+        <el-alert
+          v-if="isPagesDemo"
+          type="warning"
+          show-icon
+          :closable="false"
+          title="当前为 GitHub Pages 静态演示"
+          description="AI 对话、数据看板、商品推荐等动态功能需在本地运行后端 + Ollama 才能使用。"
+          class="pages-banner"
+        />
         <router-view />
       </el-main>
     </el-container>
@@ -55,6 +65,8 @@ const route = useRoute()
 const chatVisible = ref(false)
 const activeMenu = computed(() => route.path)
 const currentTitle = computed(() => route.meta.title || '智慧零售营运Agent')
+// 仅当运行在 GitHub Pages 域名下（xxx.github.io）时展示静态演示提示
+const isPagesDemo = typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')
 </script>
 
 <style scoped>
@@ -68,4 +80,5 @@ const currentTitle = computed(() => route.meta.title || '智慧零售营运Agent
 .header { display: flex; justify-content: space-between; align-items: center; background: #fff; border-bottom: 1px solid #e5e7eb; padding: 0 24px; }
 .page-title { font-size: 18px; font-weight: 600; color: #1f2937; }
 .main-content { background: #f3f4f6; padding: 24px; overflow-y: auto; }
+.pages-banner { margin-bottom: 16px; }
 </style>
