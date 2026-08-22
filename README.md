@@ -2,6 +2,12 @@
 
 基于 Vue 3 + FastAPI + Ollama 的智慧零售营运智能体系统，集成商品推荐、顾客经营、库存管理、营运决策分析和智能对话五大模块。
 
+## 🔗 在线体验 & 仓库
+
+- **GitHub 仓库**：https://github.com/WBW-QD/smart-retail-agent
+- **在线演示（GitHub Pages）**：https://WBW-QD.github.io/smart-retail-agent/
+- 线上版本为**纯前端静态演示**（无后端），AI 对话、数据看板等调用 `/api` 的功能需在本地运行后端 + Ollama 才能使用（详见下方「部署到 GitHub Pages」说明）。
+
 ## 技术栈
 
 | 层级 | 技术 |
@@ -74,6 +80,16 @@ npm run dev
 
 - 前端界面：http://localhost:5173
 - 后端 API 文档：http://localhost:8000/docs
+
+## 部署到 GitHub Pages
+
+前端已配置 GitHub Actions 自动部署（`.github/workflows/deploy.yml`），推送到 `main` 分支即自动构建并发布：
+
+1. 在 GitHub 仓库 **Settings → Pages** 中确认 **Source** 为 **GitHub Actions**
+2. 推送代码到 `main`，Actions 会自动执行 `build` + `deploy`
+3. 访问 https://WBW-QD.github.io/smart-retail-agent/
+
+> ⚠️ **限制说明**：GitHub Pages 是纯静态托管，没有后端服务。线上演示可正常浏览界面，但调用 `/api` 的 AI 对话、数据看板、商品推荐等动态功能会失败——完整功能请按「快速开始」在本地运行（后端 + Ollama）。
 
 ## 项目结构
 
@@ -160,3 +176,5 @@ export OLLAMA_MODEL=llama3.1
 2. 首次启动后端会自动创建数据库并插入模拟数据，无需手动初始化
 3. 前端通过 Vite 代理将 `/api` 请求转发到后端 `localhost:8000`，无需额外配置跨域
 4. 如 Ollama 运行在另一台机器上，修改 `OLLAMA_BASE_URL` 为对应地址
+5. 前端路由使用 hash 模式（`/#/products`），以保证 GitHub Pages 等纯静态托管下刷新不 404
+6. GitHub Pages 线上演示为静态前端，动态功能需本地运行（见「部署到 GitHub Pages」）
