@@ -46,33 +46,42 @@ ollama pull qwen2.5:7b
 ollama serve
 ```
 
-### 2. 一键启动项目
+### 2. 一键启动项目（前后端一起启动）
+
+首次使用先安装依赖：
 
 ```bash
-chmod +x start.sh
-./start.sh
+# 后端依赖（仅首次）
+cd backend
+python -m venv venv
+venv\Scripts\pip install -r requirements.txt     # Windows
+# venv/bin/pip install -r requirements.txt       # Linux / macOS
+
+# 前端依赖（仅首次）
+cd ../frontend
+npm install
 ```
 
-启动脚本会自动：
-- 创建 Python 虚拟环境并安装后端依赖
-- 安装前端 npm 依赖
-- 后台启动后端（端口 8000）和前端（端口 5173）
-
-停止本地服务：
+日常启动（**一条命令，前后端自动一起启动**）：
 
 ```bash
-./stop.sh          # 或 Windows 双击 stop.bat
+cd frontend
+npm run dev
 ```
 
-### 3. 手动启动（分步）
+- `npm run dev` 会自动拉起 FastAPI 后端（端口 8000）+ Vue 前端（端口 5173）
+- 停止：在终端按 `Ctrl+C`，后端会随之自动停止
+- 若 8000 端口已有服务在运行，后端会自动跳过启动（看终端提示即可）
+
+### 3. 手动启动（分步，备选）
 
 **后端：**
 ```bash
 cd backend
-python3 -m venv venv
-source venv/bin/activate
+python -m venv venv
+venv\Scripts\activate            # Windows（Linux/macOS 用 source venv/bin/activate）
 pip install -r requirements.txt
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
 **前端（新开终端）：**
@@ -117,7 +126,7 @@ smart-retail-agent/
 │   │   ├── App.vue
 │   │   └── main.js
 │   ├── index.html
-│   ├── vite.config.js
+│   ├── vite.config.js          # 含自动启动后端插件（npm run dev 前后端一起启动）
 │   └── package.json
 ├── backend/                   # FastAPI 后端
 │   ├── main.py                # API 路由（12个接口）
@@ -127,10 +136,7 @@ smart-retail-agent/
 │   ├── ollama_client.py       # Ollama 调用封装
 │   ├── mock_data.py           # 初始化模拟数据
 │   └── requirements.txt
-├── start.sh                   # 一键启动脚本（跨平台）
-├── start.bat                  # Windows 双击启动
-├── stop.sh                    # 一键停止脚本（跨平台）
-├── stop.bat                   # Windows 双击停止
+├── .github/workflows/deploy.yml  # GitHub Pages 自动部署
 ├── PROMPT.md                  # 原始 vibe coding 提示词
 └── README.md
 ```
@@ -187,3 +193,4 @@ export OLLAMA_MODEL=llama3.1
 4. 如 Ollama 运行在另一台机器上，修改 `OLLAMA_BASE_URL` 为对应地址
 5. 前端路由使用 hash 模式（`/#/products`），以保证 GitHub Pages 等纯静态托管下刷新不 404
 6. GitHub Pages 线上演示为静态前端，动态功能需本地运行（见「部署到 GitHub Pages」）
+7. 本地启动只需 `npm run dev`：前端启动时自动拉起后端，退出时自动停止后端（无需单独启停脚本）
